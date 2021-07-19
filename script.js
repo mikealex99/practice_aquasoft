@@ -362,3 +362,19 @@ async function asyncawait() {
 
   const player = closure()
   player()
+
+
+
+  
+var first = 1;
+var start;
+function app(){
+    var second = 2;
+        function add(){
+            var third = first + second;
+            console.log(third);
+        }
+    start = add();
+}
+const startt = app()
+console.log(start)
