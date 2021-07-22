@@ -78,10 +78,18 @@ const employeesCtrl = {
     // join 'Employees' / 'Projects' 
     getEmployeeandProject: async(req, res) => {
         try {
-            //listare ambele tabele
-            const list = await Employees.findAll({
-                include: Projects 
-            });
+            const id = req.params.id
+
+            // afisarea unui angajat si a proiectului specific acestuia
+            const list = await Employees.findOne({
+                where: { 
+                    id: id
+                },
+                include: {
+                    model: Projects 
+                }
+            })
+
             res.json(list);
         } catch (err) {
             return res.status(500).json({msg: err.message})
