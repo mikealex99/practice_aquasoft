@@ -26,5 +26,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         }
     })
+   
+    Employees.associate = (models) => {
+        Employees.belongsTo(models.Projects, { foreignKey: 'project_id' })
+    }
+
     return Employees
 }

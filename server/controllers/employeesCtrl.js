@@ -1,4 +1,5 @@
 const {Employees} = require ('../models')
+const {Projects} = require ('../models')
 
 const employeesCtrl = {
 
@@ -10,7 +11,7 @@ const employeesCtrl = {
             // salvare in MySQL
             await Employees.create(add)
 
-            // post verify
+            // postman verify
             res.json(add)
         } catch (err) {
             return res.status(500).json({msg:err.message})
@@ -72,6 +73,19 @@ const employeesCtrl = {
 
         res.json('Ati actualizat un angajat cu succes!')
 
+    },
+
+    // join 'Employees' / 'Projects' 
+    getEmployeeandProject: async(req, res) => {
+        try {
+            //listare ambele tabele
+            const list = await Employees.findAll({
+                include: Projects 
+            });
+            res.json(list);
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
     }
     
 }
