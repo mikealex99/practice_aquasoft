@@ -43,6 +43,20 @@ const employeesCtrl = {
         }
     },
 
+       // listeaza un singur angajat in functie de id
+       getEmployeeById: async(req, res) => {
+        try {
+            const nam = req.params.id
+
+            // find employee by id
+            const emplName = await Employees.findAll({ where: { id: nam} });
+
+            res.json(emplName)
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    },
+
     // sterge un angajat in functie de pk
     deleteEmployee: async (req, res) =>{
         try {

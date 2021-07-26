@@ -1,0 +1,77 @@
+
+
+<div class="container-fluid">
+    <div class="d-flex flex-row-reverse">
+        <button type="button" (click) = "clearFormProject()"  class="btn btn-success p-2 mt-4 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Proiect nou</button>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nume_proiect</th>
+            <th scope="col">Data_start</th>
+            <th scope="col">Data_sfarsit</th>
+            <th scope="col">Descriere</th>
+            <th scope="col">Cod_proiect</th>
+            <th scope="col">Actiuni</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor = "let proj of projectInfo">
+            <td>{{proj.id}}</td>
+            <td>{{proj.project_name}}</td>
+            <td>{{proj.start_date | date :'mediumDate' }}</td>
+            <td>{{proj.planned_end_date | date :'mediumDate' }}</td>
+            <td>{{proj.description}}</td>
+            <td>{{proj.project_code}}</td>
+            <td>
+                <button (click) = "onEdit(proj)" type="button" class="btn btn-outline-secondary p-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+                <button class="btn btn-outline-danger mx-3 p-1" (click)="removeProject(proj)">Sterge</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content p-3">
+    <div class="modal-header">
+      <h5 class="modal-title p-2" id="exampleModalLabel">Proiect</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="formValue">
+            <div class="mb-3">
+                <label for="exampleInputName" class="form-label d-flex">Numele proiectului</label>
+                <input type="text" formControlName="project_name" class="form-control" id="exampleInputName" aria-describedby="emailHelp">
+              </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label d-flex">Data_start</label>
+              <input type="text" formControlName="start_date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label d-flex">Data_sfarsit</label>
+              <input type="text" formControlName="planned_end_date" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label d-flex">Descriere</label>
+                <input type="text" formControlName="description" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label d-flex">Cod_proiect</label>
+                <input type="text" formControlName="project_code" class="form-control" id="exampleInputPassword1">
+            </div>
+          </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary p-2" data-bs-dismiss="modal" id="close">Inchide</button>
+      <button type="button" *ngIf="add" (click)="addProjectDetails()" class="btn btn-primary mx-3 p-2">Adauga</button>
+      <button type="button" *ngIf="update" (click)="updateProjects()" class="btn btn-primary mx-3 p-2">Salveaza</button>
+    </div>
+  </div>
+</div>
+</div>

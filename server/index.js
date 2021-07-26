@@ -1,10 +1,14 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+const bodyParser = require('body-parser')
 const MySQL_DB = require('./models')
 const emplRouter = require('./routes/employeesRoutes')
 const projRouter = require('./routes/projectsRoutes')
 
 app.use(express.json())
+app.use(bodyParser.json());
+app.use(cors());
 
 // RECEIVE ROUTES ---> https://localhost:9999/ROUTES
 app.use("/employees", emplRouter)

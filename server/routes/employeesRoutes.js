@@ -8,6 +8,9 @@ router.get('/list', employeesCtrl.getEmployees)
 // ruta catre afisarea angajatilor in functie de nume
 router.get('/listByName/:name', employeesCtrl.getEmployeeByName)
 
+// ruta catre afisarea angajatilor in functie de id
+router.get('/listById/:id', employeesCtrl.getEmployeeById)
+
 // ruta catre afisarea angajatului impreuna cu proiectul sau
 router.get('/listEmployeeProject/:id', employeesCtrl.getEmployeeandProject)
 

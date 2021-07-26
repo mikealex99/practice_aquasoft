@@ -8,6 +8,9 @@ router.get('/list', projectsCtrl.getProjects)
 //ruta catre adaugarea proiectelor
 router.post('/add', projectsCtrl.addProject)
 
+// ruta catre afisarea angajatilor in functie de id
+router.get('/listById/:id', projectsCtrl.getProjectById)
+
 //ruta catre stergerea unui proiect in functie de id
 router.delete('/remove/:id', projectsCtrl.deleteProject)
 

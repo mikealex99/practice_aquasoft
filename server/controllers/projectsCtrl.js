@@ -27,6 +27,20 @@ const projectsCtrl = {
         }
     },
 
+    // listeaza un singur proiect in functie de id
+    getProjectById: async(req, res) => {
+            try {
+                const nam = req.params.id
+    
+                // find employee by id
+                const projName = await Projects.findAll({ where: { id: nam} });
+    
+                res.json(projName)
+            } catch (err) {
+                return res.status(500).json({msg: err.message})
+            }
+    },
+
      // sterge un proiect in functie de pk
      deleteProject: async (req, res) =>{
         try {
