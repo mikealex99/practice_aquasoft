@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiEmployeeService } from '../service_controller/employee-service';
 import { Employee } from './employees-model';
-
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-employees',
@@ -17,23 +17,41 @@ export class EmployeesComponent implements OnInit {
   employeeInfo !: any
   add !: boolean
   update !: boolean
-  constructor(private formbuilder: FormBuilder, 
-    private api : ApiEmployeeService) { }
+  submitted = false
+
+  // set title of page in constructor
+  constructor(private formbuilder: FormBuilder, private titleService: Title,
+    private api : ApiEmployeeService, ) { 
+      this.titleService.setTitle('Angajati');
+    }
 
   ngOnInit(): void {
     this.formValue = this.formbuilder.group({
-      name: [''],
-      address : [''],
-      email: [''],
-      hire_date: [''],
-      salary: [''],
-      job_title: ['']
+      name: ['', Validators.required],
+      address : ['', Validators.required],
+      email: ['',[Validators.required, Validators.email]],
+      hire_date: ['', Validators.required],
+      salary: ['', Validators.required],
+      job_title: ['', Validators.required]
     })
 
     this.getAllEmployees()
   }
 
+  // get f for input control
+  get f(): { [key: string]: AbstractControl } {
+    return this.formValue.controls;
+  }
+
   addEmployeeDetails(){
+    this.submitted = true;
+    if (this.formValue.invalid) {
+      return;
+    }
+
+    console.log(JSON.stringify(this.formValue.value, null, 2));
+
+
     this.employeeModelObj.name = this.formValue.value.name;
     this.employeeModelObj.address = this.formValue.value.address;
     this.employeeModelObj.email = this.formValue.value.email;
@@ -45,10 +63,11 @@ export class EmployeesComponent implements OnInit {
 
       alert("Ati adaugat un angajat nou!")
 
-
       // close modal
       let ref = document.getElementById('close')
       ref?.click()
+      // clear validation message
+      this.submitted = false;
       // reset form
       this.formValue.reset()
       // get all records
@@ -65,6 +84,13 @@ export class EmployeesComponent implements OnInit {
   }
 
   updateEmployees(){
+    this.submitted = true;
+    if (this.formValue.invalid) {
+      return;
+    }
+
+    console.log(JSON.stringify(this.formValue.value, null, 2));
+
     this.employeeModelObj.name = this.formValue.value.name;
     this.employeeModelObj.address = this.formValue.value.address;
     this.employeeModelObj.email = this.formValue.value.email;
@@ -80,6 +106,8 @@ export class EmployeesComponent implements OnInit {
     // close modal
     let ref = document.getElementById('close')
     ref?.click()
+    // clear validation message
+    this.submitted = false;
     // reset form
     this.formValue.reset()
 

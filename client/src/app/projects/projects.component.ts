@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiProjectService } from '../service_controller/project-service';
 import { Project } from './projects-model';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-projects',
@@ -17,22 +18,38 @@ export class ProjectsComponent implements OnInit {
   projectInfo !: any
   add !: boolean
   update !: boolean
+  submitted = false
 
-  constructor(private formbuilder: FormBuilder,private api : ApiProjectService) { }
+  // set title of page in constructor
+  constructor(private formbuilder: FormBuilder, private titleService: Title, private api : ApiProjectService ) { 
+      this.titleService.setTitle('Proiecte');
+    }
 
   ngOnInit(): void {
     this.formValue = this.formbuilder.group({
-      project_name: [''],
-      start_date : [''],
-      planned_end_date: [''],
-      description: [''],
-      project_code: ['']
+      project_name: ['', Validators.required],
+      start_date : ['', Validators.required],
+      planned_end_date: ['', Validators.required],
+      description: ['', Validators.required],
+      project_code: ['', Validators.required]
     })
 
     this.getAllProjects()
   }
 
+  // get f for input control
+  get f(): { [key: string]: AbstractControl } {
+      return this.formValue.controls;
+  }
+
   addProjectDetails(){
+    this.submitted = true;
+    if (this.formValue.invalid) {
+      return;
+    }
+
+    console.log(JSON.stringify(this.formValue.value, null, 2));
+
     this.projectModelObj.project_name = this.formValue.value.project_name;
     this.projectModelObj.start_date = this.formValue.value.start_date;
     this.projectModelObj.description = this.formValue.value.description;
@@ -47,6 +64,8 @@ export class ProjectsComponent implements OnInit {
       // close modal
       let ref = document.getElementById('close')
       ref?.click()
+      // clear validation message
+      this.submitted = false;
       // reset form
       this.formValue.reset()
       // get all records
@@ -63,6 +82,13 @@ export class ProjectsComponent implements OnInit {
   }
 
   updateProjects(){
+    this.submitted = true;
+    if (this.formValue.invalid) {
+      return;
+    }
+
+    console.log(JSON.stringify(this.formValue.value, null, 2));
+
     this.projectModelObj.project_name = this.formValue.value.project_name;
     this.projectModelObj.start_date = this.formValue.value.start_date;
     this.projectModelObj.description = this.formValue.value.description;
@@ -76,6 +102,8 @@ export class ProjectsComponent implements OnInit {
       // close modal
       let ref = document.getElementById('close')
       ref?.click()
+      // clear validation message
+      this.submitted = false;
       // reset form
       this.formValue.reset()
   

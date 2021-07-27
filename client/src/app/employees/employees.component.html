@@ -48,28 +48,52 @@
     <div class="modal-body ">
         <form [formGroup]="formValue">
             <div class="mb-3">
-                <label for="exampleInputName" class="form-label d-flex">Nume</label>
-                <input type="text" formControlName="name" class="form-control" id="exampleInputName" aria-describedby="emailHelp">
-              </div>
+                <label for="fullname" class="form-label d-flex">Nume</label>
+                <input required type="text" formControlName="name" class="form-control" aria-describedby="emailHelp"
+                [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
+                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                  <div *ngIf="f.name.errors.required">Introduceti numele angajatului</div>
+                </div>  
+            </div>
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label d-flex">Adresa</label>
-              <input type="text" formControlName="address" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input type="text" formControlName="address" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              [ngClass]="{ 'is-invalid': submitted && f.address.errors }"/>
+              <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+                <div *ngIf="f.address.errors.required">Introduceti adresa angajatului</div>
+              </div> 
             </div>
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label d-flex">Email</label>
-              <input type="text" formControlName="email" class="form-control" id="exampleInputPassword1">
+              <input type="email" formControlName="email" class="form-control" id="exampleInputPassword1"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">Introduceti un email valid</div>
+              </div> 
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label d-flex">Data angajarii</label>
-                <input type="text" formControlName="hire_date" class="form-control" id="exampleInputPassword1">
+                <input type="text" formControlName="hire_date" class="form-control" id="exampleInputPassword1"
+                [ngClass]="{ 'is-invalid': submitted && f.hire_date.errors }">
+                <div *ngIf="submitted && f.hire_date.errors" class="invalid-feedback">
+                  <div *ngIf="f.hire_date.errors.required">Introduceti o data valida</div>
+                </div> 
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label d-flex">Salariu</label>
-                <input type="text" formControlName="salary" class="form-control" id="exampleInputPassword1">
+                <input type="text" formControlName="salary" class="form-control" id="exampleInputPassword1"
+                [ngClass]="{ 'is-invalid': submitted && f.salary.errors }">
+                <div *ngIf="submitted && f.salary.errors" class="invalid-feedback">
+                  <div *ngIf="f.salary.errors.required">Introduceti un salariu valid</div>
+                </div> 
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label d-flex">Job</label>
-                <input type="text" formControlName="job_title" class="form-control" id="exampleInputPassword1">
+                <input type="text" formControlName="job_title" class="form-control" id="exampleInputPassword1"
+                [ngClass]="{ 'is-invalid': submitted && f.job_title.errors }">
+                <div *ngIf="submitted && f.job_title.errors" class="invalid-feedback">
+                  <div *ngIf="f.job_title.errors.required">Introduceti un job valid</div>
+                </div> 
             </div>
           </form>
     </div>

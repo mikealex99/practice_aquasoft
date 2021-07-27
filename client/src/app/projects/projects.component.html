@@ -47,23 +47,43 @@
         <form [formGroup]="formValue">
             <div class="mb-3">
                 <label for="exampleInputName" class="form-label d-flex">Numele proiectului</label>
-                <input type="text" formControlName="project_name" class="form-control" id="exampleInputName" aria-describedby="emailHelp">
+                <input type="text" formControlName="project_name" class="form-control" id="exampleInputName" aria-describedby="emailHelp"
+                [ngClass]="{ 'is-invalid': submitted && f.project_name.errors }"/>
+                <div *ngIf="submitted && f.project_name.errors" class="invalid-feedback">
+                  <div *ngIf="f.project_name.errors.required">Introduceti numele proiectului</div>
+                </div>  
               </div>
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label d-flex">Data_start</label>
-              <input type="text" formControlName="start_date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input type="text" formControlName="start_date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              [ngClass]="{ 'is-invalid': submitted && f.start_date.errors }"/>
+              <div *ngIf="submitted && f.start_date.errors" class="invalid-feedback">
+                <div *ngIf="f.start_date.errors.required">Introduceti o data valida</div>
+              </div>  
             </div>
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label d-flex">Data_sfarsit</label>
-              <input type="text" formControlName="planned_end_date" class="form-control" id="exampleInputPassword1">
+              <input type="text" formControlName="planned_end_date" class="form-control" id="exampleInputPassword1"
+              [ngClass]="{ 'is-invalid': submitted && f.planned_end_date.errors }"/>
+              <div *ngIf="submitted && f.planned_end_date.errors" class="invalid-feedback">
+                <div *ngIf="f.planned_end_date.errors.required">Introduceti o data valida</div>
+              </div>  
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label d-flex">Descriere</label>
-                <input type="text" formControlName="description" class="form-control" id="exampleInputPassword1">
+                <input type="text" formControlName="description" class="form-control" id="exampleInputPassword1"
+                [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
+                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                  <div *ngIf="f.description.errors.required">Introduceti o descriere valida</div>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label d-flex">Cod_proiect</label>
-                <input type="text" formControlName="project_code" class="form-control" id="exampleInputPassword1">
+                <input type="text" formControlName="project_code" class="form-control" id="exampleInputPassword1"
+                [ngClass]="{ 'is-invalid': submitted && f.project_code.errors }"/>
+                <div *ngIf="submitted && f.project_code.errors" class="invalid-feedback">
+                  <div *ngIf="f.project_code.errors.required">Introduceti un cod valid</div>
+                </div>
             </div>
           </form>
     </div>
