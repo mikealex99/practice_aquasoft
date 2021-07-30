@@ -1,12 +1,37 @@
+<app-header></app-header>
 
+<div class="container-fluid">
+  <h1>Angajati</h1>
+</div>
+
+<div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="alertAdd">
+    Ati adaugat un angajat cu succes!
+  <button type="button" class="close border-0 bg-danger rounded-circle pl-5 text-white" data-bs-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="alert alert-primary alert-dismissible fade show" role="alert" *ngIf="alertUpd">
+  Ati modificat un angajat cu succes!
+<button type="button" class="close border-0 bg-danger rounded-circle pl-5 text-white" data-bs-dismiss="alert" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="alertDel">
+  Ati eliminat un angajat cu succes!
+<button type="button" class="close border-0 bg-danger rounded-circle pl-5 text-white" data-bs-dismiss="alert" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
 
 <div class="container-fluid">
     <div class="d-flex flex-row-reverse">
-        <button type="button" (click) = "clearFormEmployee()"  class="btn btn-success p-2 mt-4 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Angajat nou</button>
+        <button type="button" (click) = "clearFormEmployee()"  class="btn btn-secondary p-2 mt-4 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Angajat nou</button>
     </div>
 </div>
 
-<table class="table">
+<table class="container">
     <thead>
         <tr>
             <th scope="col">ID</th>
@@ -29,8 +54,8 @@
             <td>{{empl.salary}}</td>
             <td>{{empl.job_title}}</td>
             <td>
-                <button (click) = "onEdit(empl)" type="button" class="btn btn-outline-secondary p-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
-                <button class="btn btn-outline-danger mx-3 p-1" (click)="removeEmployee(empl)">Sterge</button>
+                <button (click) = "onEdit(empl)" type="button" class="btn btn-outline-success p-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+                <button  type="button" class="btn btn-outline-danger mx-3 p-1" (click)="removeEmployee(empl)">Sterge</button>
             </td>
         </tr>
     </tbody>
@@ -105,3 +130,4 @@
   </div>
 </div>
 </div>
+

@@ -11,21 +11,25 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class EmployeesComponent implements OnInit {
-
+  
   formValue !: FormGroup
   employeeModelObj : Employee = new Employee()
   employeeInfo !: any
   add !: boolean
   update !: boolean
   submitted = false
-
+  alertAdd = false
+  alertUpd = false
+  alertDel = false
+  
   // set title of page in constructor
-  constructor(private formbuilder: FormBuilder, private titleService: Title,
+  constructor( private formbuilder: FormBuilder, private titleService: Title,
     private api : ApiEmployeeService, ) { 
       this.titleService.setTitle('Angajati');
     }
 
   ngOnInit(): void {
+
     this.formValue = this.formbuilder.group({
       name: ['', Validators.required],
       address : ['', Validators.required],
@@ -61,8 +65,8 @@ export class EmployeesComponent implements OnInit {
 
     this.api.addEmployee(this.employeeModelObj).subscribe(res=>{
 
-      alert("Ati adaugat un angajat nou!")
-
+      // display alert
+      this.alertAdd = true
       // close modal
       let ref = document.getElementById('close')
       ref?.click()
@@ -72,6 +76,7 @@ export class EmployeesComponent implements OnInit {
       this.formValue.reset()
       // get all records
       this.getAllEmployees()
+
     },err=>{
       alert("Error!")
     })
@@ -98,11 +103,11 @@ export class EmployeesComponent implements OnInit {
     this.employeeModelObj.salary = this.formValue.value.salary;
     this.employeeModelObj.job_title = this.formValue.value.job_title;
 
-    if (window.confirm("Sunteti sigur ca doriti sa modificati informatiile?")) {
-
     this.api.updateEmpl(this.employeeModelObj, this.employeeModelObj.id)
     .subscribe(res=>{
 
+    // display alert
+    this.alertUpd = true
     // close modal
     let ref = document.getElementById('close')
     ref?.click()
@@ -112,8 +117,9 @@ export class EmployeesComponent implements OnInit {
     this.formValue.reset()
 
     this.getAllEmployees()
+
     })
-  }
+  
   }
 
   onEdit(empl: any){
@@ -137,11 +143,11 @@ export class EmployeesComponent implements OnInit {
   }
 
   removeEmployee(empl: any){
-    if (window.confirm("Sunteti sigur ca doriti sa eliminati acest angajat?")) {
      this.api.deleteEmployee(empl.id).subscribe(res=>{
+        // display alert
+        this.alertDel = true
        // then display all records
        this.getAllEmployees()
      })
-  }
   }
 }

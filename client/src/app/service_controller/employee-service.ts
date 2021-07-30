@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http'
 import {catchError, map} from 'rxjs/operators'
 import { Observable, throwError } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,6 +23,8 @@ export class ApiEmployeeService {
 // adauga un angajat nou
   addEmployee(data : any){
     let API_URL = `${this.REST_API}/add`;
+
+
 
     return this.http.post<any>(API_URL, data)
     .pipe(map((res : any)=>{

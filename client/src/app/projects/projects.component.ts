@@ -19,7 +19,10 @@ export class ProjectsComponent implements OnInit {
   add !: boolean
   update !: boolean
   submitted = false
-
+  alertAdd = false
+  alertUpd = false
+  alertDel = false
+  
   // set title of page in constructor
   constructor(private formbuilder: FormBuilder, private titleService: Title, private api : ApiProjectService ) { 
       this.titleService.setTitle('Proiecte');
@@ -58,8 +61,7 @@ export class ProjectsComponent implements OnInit {
 
     this.api.addProject(this.projectModelObj).subscribe(res=>{
 
-      alert("Ati adaugat un proiect nou!")
-
+      this.alertAdd = true
 
       // close modal
       let ref = document.getElementById('close')
@@ -95,10 +97,11 @@ export class ProjectsComponent implements OnInit {
     this.projectModelObj.planned_end_date = this.formValue.value.planned_end_date;
     this.projectModelObj.project_code = this.formValue.value.project_code;
 
-    if (window.confirm("Sunteti sigur ca doriti sa modificati acest proiect?")) {
       this.api.updateProj(this.projectModelObj, this.projectModelObj.id)
       .subscribe(res=>{
-  
+
+      // display alert
+      this.alertUpd = true
       // close modal
       let ref = document.getElementById('close')
       ref?.click()
@@ -108,8 +111,8 @@ export class ProjectsComponent implements OnInit {
       this.formValue.reset()
   
       this.getAllProjects()
+
       })
-    }
  
   }
 
@@ -133,13 +136,14 @@ export class ProjectsComponent implements OnInit {
   }
 
   removeProject(proj: any){
-    
-    if (window.confirm("Sunteti sigur ca doriti sa stergeti acest proiect?")) {
+
      this.api.deleteProject(proj.id).subscribe(res=>{
+        // display alert
+        this.alertDel = true
+
        // then display all records
        this.getAllProjects()
      })
   }
-}
 
 }

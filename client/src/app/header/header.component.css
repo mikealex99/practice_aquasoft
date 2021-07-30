@@ -9,21 +9,19 @@ header{
     border-bottom: 1px solid #ddd;
 }
 
-header .logo{
-    flex:1;
-}
 
 a{
     text-decoration: none;
+    color: rgb(255, 255, 255);
   }
   
 ul li{
-    list-style: none;
+    list-style: none;  
 }
 
 header a{
     text-transform: uppercase;
-    color: #555;
+    font-family: 'Palette Mosaic', cursive;
 }
 
 header ul li{
