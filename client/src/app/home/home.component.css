@@ -21,7 +21,7 @@
   body .cybr-btn + .cybr-btn {
     margin-top: 2rem;
   }
-  
+
   .cybr-btn {
     --primary: hsl(var(--primary-hue), 85%, calc(var(--primary-lightness, 50) * 1%));
     --shadow-primary: hsl(var(--shadow-primary-hue), 90%, 50%);
@@ -54,7 +54,7 @@
     position: relative;
     font-weight: 700;
     border: 0;
-    margin-top: 22rem;
+    margin-top: 15rem;
     min-width: 300px;
     height: 75px;
     line-height: 75px;
@@ -116,7 +116,7 @@
     animation: glitch 2s infinite;
     display: none;
   }
-  
+
   .cybr-btn:hover .cybr-btn__glitch {
     display: block;
   }

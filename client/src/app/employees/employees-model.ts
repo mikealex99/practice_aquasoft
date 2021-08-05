@@ -8,4 +8,5 @@ export class Employee{
     hire_date !: Date;
     salary !: number;
     job_title !: string;
+    project_id !: number;
 }

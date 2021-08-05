@@ -6,12 +6,18 @@ import { AppComponent } from './app.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { JwtModule } from '@auth0/angular-jwt';
+
 import { HomeComponent } from './home/home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxPaginationModule } from 'ngx-pagination';
+import {  TokenInterceptor } from './auth.interceptor';
+import { AuthService } from './service_controller/auth.service.service';
+import { AuthGuard } from './guards/auth.guard';
+
 
 @NgModule({
   declarations: [
@@ -29,9 +35,15 @@ import { HomeComponent } from './home/home.component';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    JwtModule
+    BrowserAnimationsModule,
+    NgxPaginationModule
   ],
-  providers: [],
+  providers: [    
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

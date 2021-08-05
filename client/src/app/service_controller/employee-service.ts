@@ -24,8 +24,6 @@ export class ApiEmployeeService {
   addEmployee(data : any){
     let API_URL = `${this.REST_API}/add`;
 
-
-
     return this.http.post<any>(API_URL, data)
     .pipe(map((res : any)=>{
       return res
@@ -47,6 +45,29 @@ export class ApiEmployeeService {
         catchError(this.handleError)
       )
   }
+
+  // Get single object
+getUser(id: any): Observable<any> {
+  let API_URL = `${this.REST_API}/infor/${id}`;
+  return this.http.get(API_URL, { headers: this.httpHeaders })
+    .pipe(map((res: any) => {
+        return res || {}
+      }),
+      catchError(this.handleError)
+    )
+}
+
+  // Get employee project
+  getEmployeeProj(id: any): Observable<any> {
+    let API_URL = `${this.REST_API}/listEmployeeProject/${id}`;
+    return this.http.get(API_URL, { headers: this.httpHeaders })
+      .pipe(map((res: any) => {
+          return res || {}
+        }),
+        catchError(this.handleError)
+      )
+  }
+
 
 // Update employee
   updateEmpl(data: any, id: number): Observable<any> {

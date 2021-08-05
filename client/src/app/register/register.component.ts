@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-//import { AuthService } from '../service_controller/auth.service';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { UserModel } from './userModel';
-//import { TokenStorageService } from '../service_controller/token-storage.service';
-
+import { Router } from '@angular/router';
+import { AuthService } from '../service_controller/auth.service.service';
+import { TokenStorageService } from '../service_controller/token-storage.service';
 
 @Component({
   selector: 'app-register',
@@ -12,55 +10,54 @@ import { UserModel } from './userModel';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-
+  
+  form: any = {
+    username: null,
+    email: null,
+    password: null
+  };
 
   //variables
   isSuccessful = false;
   isRegisterFailed = false;
   errorMessage = '';
-  formValue !: FormGroup
-  userModelObj : UserModel = new UserModel()
 
-  constructor( private formbuilder: FormBuilder,private titleService: Title) { 
+
+  constructor( private authService: AuthService, private router: Router, private tokenStorage: TokenStorageService,private titleService: Title) { 
     this.titleService.setTitle('Inregistrare');
   }
 
 
   ngOnInit(): void {
-    this.formValue = this.formbuilder.group({
-      username: ['', Validators.required],
-      password : ['', Validators.required],
-      email: ['',[Validators.required, Validators.email]]
-    })
+
   }
 
-  // addUser(){
+  onSubmit(): void {
+    const {username, email, password} = this.form;
 
-  //   this.userModelObj.username = this.formValue.value.username;
-  //   this.userModelObj.password = this.formValue.value.password;
-  //   this.userModelObj.email = this.formValue.value.email;
+    this.authService.register(username, email, password).subscribe(
+      response => {
+        console.log(response)
 
-  //   console.log(this.userModelObj.email)
-
-  //   this.authService.register(this.userModelObj.username,this.userModelObj.password,this.userModelObj.email).subscribe(
-  //     data => {
-  //       console.log(data);
-  //       this.tokenStorage.saveUserLocal(data);
-
-  //       this.isSuccessful = true;
-  //       this.isRegisterFailed = false;
+        this.tokenStorage.saveToken(response.accesstoken)
+        this.tokenStorage.saveTokenRefresh(response.refreshtoken)
+        sessionStorage.setItem('loggedUser', response.newUser.username);
         
-  //       this.loadPage();
-  //     },
-  //     err => {
-  //       this.errorMessage = err.error.message;
-  //       this.isRegisterFailed = true;
-  //     }
-  //   );
-  // }
+        this.isSuccessful = true
 
-  // loadPage(): void {
-  //   window.location.href="/employees";
-  // }
+        this.redirectPage()
+
+      },
+      err => {
+        this.errorMessage = err.error.message
+        this.isRegisterFailed = true
+      }
+    )
+
+  }
+
+  redirectPage(): void {
+    this.router.navigateByUrl('/home')
+  }
   
 }

@@ -3,6 +3,7 @@ const config = require("../config/config.auth");
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const refreshTokens = {};
 
 const authCtrl = {
     register : async (req, res) => {
@@ -47,7 +48,7 @@ const authCtrl = {
                     path:'/auth/refresh_token'
             })
 
-            res.json({accesstoken})
+            res.json({accesstoken, refreshtoken, newUser})
 
             } catch (err) {
                     return res.status(500).json({msg:err.message})
@@ -74,13 +75,16 @@ const authCtrl = {
             const accesstoken=createAccessToken({id: user.id})
             const refreshtoken=createRefreshToken({id: user.id})
 
+            refreshTokens[refreshtoken] = username;
+
             res.cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
                 path: '/auth/refresh_token',
                 maxAge: 7*24*60*60*100  // 7days
             })
 
-            res.json({accesstoken})
+
+            res.json({accesstoken,refreshtoken,user})
 
         } catch (err) {
             return res.status(500).json({msg:err.message})
@@ -91,6 +95,7 @@ const authCtrl = {
         try {
             res.clearCookie('refreshtoken',{path: '/auth/refresh_token'})
             return res.json({msg: "Logged out" })
+
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
@@ -98,14 +103,16 @@ const authCtrl = {
     refreshToken: (req ,res)=>{
         try {
             const rf_token = req.cookies.refreshtoken;
-            if(!rf_token) return res.status(400).json({msg: "Please Login or Register" })
+            
+           if(!rf_token) return res.status(400).json({msg: "Please Login or Register" })
 
-            jwt.verify(rf_token, config.secret, (err, user) => {
+            jwt.verify(refreshToken, config.secret, (err, user) => {
                 if(err) return res.status(400).json({msg: "Please Login or Register" })
                 const accesstoken = createAccessToken({id: user.id})
                 res.json({accesstoken})
-            })
-
+            })      
+      
+      
             res.json({rf_token})
 
         } catch (err) {
@@ -127,7 +134,7 @@ const authCtrl = {
 }
 
 const createAccessToken=(user)=>{
-    return  jwt.sign(user, config.secret, {expiresIn:'11m'})
+    return  jwt.sign(user, config.secret, {expiresIn:'1d'})
 }
 const createRefreshToken=(user)=>{
     return  jwt.sign(user, config.secret, {expiresIn:'7d'})

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http'
+import { HttpClient, HttpErrorResponse} from '@angular/common/http'
 import {catchError, map} from 'rxjs/operators'
 import { Observable, throwError } from 'rxjs';
 
@@ -11,9 +11,7 @@ export class ApiProjectService {
 
 // Node/Express API
  REST_API: string = 'http://localhost:9999/projects';
-
-// Http Header
-   httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
+   
 
   constructor(private http: HttpClient) { }
 
@@ -35,7 +33,7 @@ export class ApiProjectService {
 // Get single object
   getProject(id: any): Observable<any> {
     let API_URL = `${this.REST_API}/listById/${id}`;
-    return this.http.get(API_URL, { headers: this.httpHeaders })
+    return this.http.get(API_URL)
       .pipe(map((res: any) => {
           return res || {}
         }),
@@ -46,7 +44,7 @@ export class ApiProjectService {
 // Update project
   updateProj(data: any, id: number): Observable<any> {
       let API_URL = `${this.REST_API}/edit/${id}`;
-      return this.http.put(API_URL, data, { headers: this.httpHeaders })
+      return this.http.put(API_URL, data)
         .pipe(map((res: any)=>{
           return res
         })
@@ -56,10 +54,11 @@ export class ApiProjectService {
 // Delete project
   deleteProject(id: any): Observable<any> {
       let API_URL = `${this.REST_API}/remove/${id}`;
-      return this.http.delete(API_URL, { headers: this.httpHeaders}).pipe(
+      return this.http.delete(API_URL).pipe(
           catchError(this.handleError)
         )
   }
+  
 
 // Error 
   handleError(error: HttpErrorResponse) {

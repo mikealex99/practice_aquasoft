@@ -45,20 +45,28 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor = "let empl of employeeInfo">
+        <tr *ngFor = "let empl of employeeInfo | paginate: { itemsPerPage: 5, currentPage: p}">
             <td>{{empl.id}}</td>
             <td>{{empl.name}}</td>
             <td>{{empl.address}}</td>
             <td>{{empl.email}}</td>
-            <td>{{ empl.hire_date | date :'mediumDate'}}</td>
+            <td>{{empl.hire_date | date :'mediumDate'}}</td>
             <td>{{empl.salary}}</td>
             <td>{{empl.job_title}}</td>
             <td>
                 <button (click) = "onEdit(empl)" type="button" class="btn btn-outline-success p-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
                 <button  type="button" class="btn btn-outline-danger mx-3 p-1" (click)="removeEmployee(empl)">Sterge</button>
+                <button  type="button" class="btn btn-outline-light" id="horizBtn" (click)="getEmplProj(empl)" data-bs-toggle="modal" data-bs-target="#exampleModal2" >Proiect</button>
             </td>
         </tr>
     </tbody>
+    <tfoot class="grey lighten-5 w-100">
+      <tr>
+        <td colspan="10" style="text-align: center; ">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </td>
+      </tr>
+    </tfoot>
 </table>
 
 <!-- Modal -->
@@ -75,7 +83,7 @@
             <div class="mb-3">
                 <label for="fullname" class="form-label d-flex">Nume</label>
                 <input required type="text" formControlName="name" class="form-control" aria-describedby="emailHelp"
-                [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
+                [ngClass]="{ 'is-invalid': submitted && f.name.errors }" placeholder="Numele angajatului"/>
                 <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
                   <div *ngIf="f.name.errors.required">Introduceti numele angajatului</div>
                 </div>  
@@ -83,7 +91,7 @@
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label d-flex">Adresa</label>
               <input type="text" formControlName="address" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-              [ngClass]="{ 'is-invalid': submitted && f.address.errors }"/>
+              [ngClass]="{ 'is-invalid': submitted && f.address.errors }" placeholder="Adresa angajatului"/>
               <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
                 <div *ngIf="f.address.errors.required">Introduceti adresa angajatului</div>
               </div> 
@@ -91,15 +99,17 @@
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label d-flex">Email</label>
               <input type="email" formControlName="email" class="form-control" id="exampleInputPassword1"
-              [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="Email-ul angajatului">
               <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                 <div *ngIf="f.email.errors.required">Introduceti un email valid</div>
               </div> 
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label d-flex">Data angajarii</label>
-                <input type="text" formControlName="hire_date" class="form-control" id="exampleInputPassword1"
-                [ngClass]="{ 'is-invalid': submitted && f.hire_date.errors }">
+              <label for="exampleDatepicker1" class="form-label d-flex">Data angajarii</label>
+                <input type="date" *ngIf="add" formControlName="hire_date" class="form-control" id="datepicker"
+                [ngClass]="{ 'is-invalid': submitted && f.hire_date.errors }" placeholder="Data angajarii">
+                <input type="text" *ngIf="update" formControlName="hire_date" class="form-control" id="datepicker"
+                [ngClass]="{ 'is-invalid': submitted && f.hire_date.errors }" placeholder="Data angajarii">
                 <div *ngIf="submitted && f.hire_date.errors" class="invalid-feedback">
                   <div *ngIf="f.hire_date.errors.required">Introduceti o data valida</div>
                 </div> 
@@ -107,7 +117,7 @@
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label d-flex">Salariu</label>
                 <input type="text" formControlName="salary" class="form-control" id="exampleInputPassword1"
-                [ngClass]="{ 'is-invalid': submitted && f.salary.errors }">
+                [ngClass]="{ 'is-invalid': submitted && f.salary.errors }" placeholder="Salariul angajatului">
                 <div *ngIf="submitted && f.salary.errors" class="invalid-feedback">
                   <div *ngIf="f.salary.errors.required">Introduceti un salariu valid</div>
                 </div> 
@@ -115,11 +125,26 @@
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label d-flex">Job</label>
                 <input type="text" formControlName="job_title" class="form-control" id="exampleInputPassword1"
-                [ngClass]="{ 'is-invalid': submitted && f.job_title.errors }">
+                [ngClass]="{ 'is-invalid': submitted && f.job_title.errors }" placeholder="Job-ul angajatului">
                 <div *ngIf="submitted && f.job_title.errors" class="invalid-feedback">
                   <div *ngIf="f.job_title.errors.required">Introduceti un job valid</div>
                 </div> 
             </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label d-flex">Proiect</label>
+              <select class="form-select" formControlName="project_id" width="300" style="width: 300px">
+                <option [ngValue]="null" disabled>Alegeti proiectul</option>
+                <option *ngFor = "let proj of projInfo" 
+                  [ngValue]="proj.id" >{{proj.project_name}} 
+                </option>
+              </select>
+              <!-- <input type="text" formControlName="project_id" class="form-control" id="exampleInputPassword1"
+              [ngClass]="{ 'is-invalid': submitted && f.project_id.errors }" placeholder="ID-ul proiectului">
+              <div *ngIf="submitted && f.project_id.errors" class="invalid-feedback">
+                <div *ngIf="f.project_id.errors.required">Introduceti un proiect valid</div>
+              </div>  -->
+          </div>
+ 
           </form>
     </div>
     <div class="modal-footer">
@@ -130,4 +155,66 @@
   </div>
 </div>
 </div>
+
+<!-- Modal project-->
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title p-2" id="exampleModalLabel">Proiect</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="formVal">
+              <div class="mb-3">
+                  <label for="exampleInputName" class="form-label d-flex">Numele proiectului </label>
+                  <input type="text" formControlName="project_name" class="form-control" id="exampleInputName" aria-describedby="emailHelp"
+                  [ngClass]="{ 'is-invalid': submitted && f.project_name.errors }" />
+                  <div *ngIf="submitted && f.project_name.errors" class="invalid-feedback">
+                    <div *ngIf="f.project_name.errors.required">Introduceti numele proiectului</div>
+                  </div>  
+                </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label d-flex">Data_start</label>
+                <input type="text" formControlName="start_date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                [ngClass]="{ 'is-invalid': submitted && f.start_date.errors }"/>
+                <div *ngIf="submitted && f.start_date.errors" class="invalid-feedback">
+                  <div *ngIf="f.start_date.errors.required">Introduceti o data valida</div>
+                </div>  
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label d-flex">Data_sfarsit</label>
+                <input type="text" formControlName="planned_end_date" class="form-control" id="exampleInputPassword1"
+                [ngClass]="{ 'is-invalid': submitted && f.planned_end_date.errors }"/>
+                <div *ngIf="submitted && f.planned_end_date.errors" class="invalid-feedback">
+                  <div *ngIf="f.planned_end_date.errors.required">Introduceti o data valida</div>
+                </div>  
+              </div>
+              <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label d-flex">Descriere</label>
+                  <input type="text" formControlName="description" class="form-control" id="exampleInputPassword1"
+                  [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+                  <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                    <div *ngIf="f.description.errors.required">Introduceti o descriere valida</div>
+                  </div>
+              </div>
+              <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label d-flex">Cod_proiect</label>
+                  <input type="text" formControlName="project_code" class="form-control" id="exampleInputPassword1"
+                  [ngClass]="{ 'is-invalid': submitted && f.project_code.errors }"/>
+                  <div *ngIf="submitted && f.project_code.errors" class="invalid-feedback">
+                    <div *ngIf="f.project_code.errors.required">Introduceti un cod valid</div>
+                  </div>
+              </div>
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary p-2" data-bs-dismiss="modal" id="closeM">Inchide</button>
+        <!-- <button type="button" *ngIf="addProj" class="btn btn-primary mx-3 p-2">Adauga</button> -->
+        <button type="button" (click)="updateProjects()" class="btn btn-primary mx-3 p-2">Salveaza</button>
+      </div>
+    </div>
+  </div>
+  </div>
 

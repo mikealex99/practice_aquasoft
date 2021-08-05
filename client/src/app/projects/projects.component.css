@@ -12,11 +12,12 @@ body {
 
 h1 {
   font-size:3em; 
-  padding-top: 2rem;
+  padding-top: 1rem;
   font-weight: 500;
   line-height:1em;
   text-align: center;
   color: #FB667A;
+  margin-bottom: .3rem;
 }
 
 

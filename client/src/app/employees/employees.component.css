@@ -12,12 +12,16 @@ body {
 
 h1 {
 
-  font-size:3em; 
-  padding-top: 2rem;
+  font-size:2.7rem; 
+  padding-top: 1rem;
   font-weight: 500;
   line-height:1em;
-  text-align: center;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   color: #FB667A;
+  margin-bottom: .5rem;
 }
 
 
@@ -88,6 +92,12 @@ h1 {
 	  transition-duration: 0.4s;
 	  transition-property: all;
   transition-timing-function: line;
+}
+
+.container #horizBtn{
+  -ms-transform: rotate(270deg); /* IE 9 */
+  -webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+  transform: rotate(270deg);
 }
 
 .container-fluid{

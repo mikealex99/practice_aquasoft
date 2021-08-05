@@ -3,13 +3,15 @@
 
         <div class="logo">
             <h1>
-                <a routerLink="/">Dashboard</a>
+                <a routerLink="/home">Dashboard</a>
             </h1>
         </div>
-
+        
         <ul>
             <li><a routerLink="/employees">Angajati</a></li>
             <li><a routerLink="/projects">Proiecte</a></li>
         </ul>
+        <label style="color:#fff">Welcome: {{userInfo}}</label>
+        <button type="button" (click)="signOut()" class="btn btn-outline-light mx-3 p-2">Logout</button>
     </header>
 </div>

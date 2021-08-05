@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { ApiProjectService } from '../service_controller/project-service';
 import { Project } from './projects-model';
 import { Title } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-projects',
@@ -18,6 +19,7 @@ export class ProjectsComponent implements OnInit {
   projectInfo !: any
   add !: boolean
   update !: boolean
+  p: number = 1;
   submitted = false
   alertAdd = false
   alertUpd = false
@@ -60,7 +62,7 @@ export class ProjectsComponent implements OnInit {
     this.projectModelObj.project_code = this.formValue.value.project_code;
 
     this.api.addProject(this.projectModelObj).subscribe(res=>{
-
+      console.log(res)
       this.alertAdd = true
 
       // close modal
@@ -117,6 +119,10 @@ export class ProjectsComponent implements OnInit {
   }
 
   onEdit(proj: any){
+    
+    var datePipe = new DatePipe("en-US");
+    proj.start_date = datePipe.transform(proj.start_date, 'mediumDate');
+    proj.planned_end_date = datePipe.transform(proj.planned_end_date, 'mediumDate');
 
     this.add = false
     this.update = true
