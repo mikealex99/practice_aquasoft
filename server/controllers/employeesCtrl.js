@@ -108,7 +108,23 @@ const employeesCtrl = {
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
-    }
+    },
+
+        // join 'Employees' / 'Projects' 
+        getEmployeeProjects: async(req, res) => {
+            try {
+    
+                // afisarea unui angajat si a proiectului specific acestuia
+                const list = await Employees.findAll({
+                    include: {
+                        model: Projects 
+                    }
+                })
+                res.json(list);
+            } catch (err) {
+                return res.status(500).json({msg: err.message})
+            }
+        }
     
 }
 

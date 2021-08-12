@@ -4,25 +4,28 @@ const employeesCtrl = require('../controllers/employeesCtrl')
 const auth = require('../middleware/auth')
 
 // ruta catre afisarea angajatilor
-router.get('/list', auth,  employeesCtrl.getEmployees)
+router.get('/list', employeesCtrl.getEmployees)
 
 // ruta catre afisarea angajatilor in functie de nume
-router.get('/listByName/:name', auth, employeesCtrl.getEmployeeByName)
+router.get('/listByName/:name', employeesCtrl.getEmployeeByName)
 
 // ruta catre afisarea angajatilor in functie de id
-router.get('/listById/:id', auth, employeesCtrl.getEmployeeById)
+router.get('/listById/:id', employeesCtrl.getEmployeeById)
 
 // ruta catre afisarea angajatului impreuna cu proiectul sau
-router.get('/listEmployeeProject/:id', auth, employeesCtrl.getEmployeeandProject)
+router.get('/listEmployeeProject/:id', employeesCtrl.getEmployeeandProject)
+
+// ruta catre afisarea angajatilor impreuna cu proiectele sale
+router.get('/listEmployeeProjects', employeesCtrl.getEmployeeProjects)
 
 // ruta catre adaugarea angajatilor
-router.post('/add', auth, employeesCtrl.addEmployee)
+router.post('/add',  employeesCtrl.addEmployee)
 
 // ruta catre stergerea unui angajat in functie de id
-router.delete('/remove/:id', auth, employeesCtrl.deleteEmployee)
+router.delete('/remove/:id', employeesCtrl.deleteEmployee)
 
 // ruta catre modificarea unui angajat in functie de id
-router.put('/edit/:id', auth, employeesCtrl.updateEmployee)
+router.put('/edit/:id',  employeesCtrl.updateEmployee)
 
 
 

@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
       this.tokenStorage.saveToken(response.accesstoken)
       this.tokenStorage.saveTokenRefresh(response.refreshtoken)
 
-
       this.isLoginFailed = false;
       this.isLoggedIn = true;
 
@@ -43,7 +42,6 @@ export class LoginComponent implements OnInit {
       this.errorMessage = err.error.message;
       this.isLoginFailed = true;
     });
-
 }
 
 

@@ -24,9 +24,9 @@ export class ProjectsComponent implements OnInit {
   alertAdd = false
   alertUpd = false
   alertDel = false
-  
+
   // set title of page in constructor
-  constructor(private formbuilder: FormBuilder, private titleService: Title, private api : ApiProjectService ) { 
+  constructor(private formbuilder: FormBuilder, private titleService: Title, private api : ApiProjectService) { 
       this.titleService.setTitle('Proiecte');
     }
 
@@ -47,13 +47,20 @@ export class ProjectsComponent implements OnInit {
       return this.formValue.controls;
   }
 
-  addProjectDetails(){
+  addProjectDetails():any{
     this.submitted = true;
     if (this.formValue.invalid) {
       return;
     }
 
     console.log(JSON.stringify(this.formValue.value, null, 2));
+
+    const fromDate = this.formValue.value.start_date;
+    const toDate = this.formValue.value.planned_end_date;
+   // Ausing the fromDate and toDate are numbers. In not convert them first after null check
+    if ((fromDate !== null && toDate !== null) && fromDate > toDate) {
+        return alert("Introduceti o data valida!")
+    }
 
     this.projectModelObj.project_name = this.formValue.value.project_name;
     this.projectModelObj.start_date = this.formValue.value.start_date;
@@ -93,6 +100,12 @@ export class ProjectsComponent implements OnInit {
 
     console.log(JSON.stringify(this.formValue.value, null, 2));
 
+    const fromDate = this.formValue.value.start_date;
+    const toDate = this.formValue.value.planned_end_date;
+   // Ausing the fromDate and toDate are numbers. In not convert them first after null check
+    if ((fromDate !== null && toDate !== null) && fromDate > toDate) {
+      return alert("Introduceti o data valida!")
+  }
     this.projectModelObj.project_name = this.formValue.value.project_name;
     this.projectModelObj.start_date = this.formValue.value.start_date;
     this.projectModelObj.description = this.formValue.value.description;

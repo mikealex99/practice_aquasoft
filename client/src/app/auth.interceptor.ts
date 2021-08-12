@@ -17,8 +17,11 @@ export class TokenInterceptor implements HttpInterceptor {
     if (this.tokenStorage.getJwtKey()) {
       request = this.addToken(request, this.tokenStorage.getJwtKey());
     }
+      setTimeout(()=>{
+        this.tokenStorage.getJwtKey()
+      },10 * 60 * 1000) //10m
 
-    // get refreshToken
+    // get other refreshToken
     let refreshtoken = this.tokenStorage.getRefreshToken()
 
     // handle exp of token -- else router to login

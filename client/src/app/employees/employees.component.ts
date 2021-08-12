@@ -233,9 +233,6 @@ export class EmployeesComponent implements OnInit {
  
   }
 
-
-
-
   clearFormEmployee(){
     this.formValue.reset()
     this.add = true
