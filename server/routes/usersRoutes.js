@@ -11,7 +11,7 @@ router.get('/logout', ctrlAuth.logout)
 
 router.get('/refresh_token', ctrlAuth.refreshToken)
 
-router.get('/infor', auth, ctrlAuth.getUser)
+router.get('/infor', ctrlAuth.getUser)
 
 
 module.exports = router
